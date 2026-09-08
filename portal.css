@@ -182,6 +182,37 @@ h1 {
 .lines-thumb .c2 { background: #3bb273; }
 .lines-thumb .c3 { background: #3aa0ff; }
 
+.prince-thumb { background: #1a0f08; }
+.prince-thumb .fig {
+  width: 18px;
+  height: 42px;
+  background: #e8d5b5;
+  box-shadow: 0 -10px 0 #c45, 22px -18px 0 2px #ddd;
+}
+
+.arkanoid-thumb {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #080810;
+  padding: 24px 40px;
+}
+.arkanoid-thumb span { height: 10px; width: 70%; background: #e33; }
+.arkanoid-thumb span:nth-child(2) { background: #3ae; width: 80%; }
+.arkanoid-thumb span:nth-child(3) { background: #fd5; width: 40%; height: 8px; margin-top: auto; }
+
+.alleycat-thumb {
+  display: flex;
+  gap: 10px;
+  background: #000;
+}
+.alleycat-thumb .w {
+  width: 28px;
+  height: 36px;
+  background: #0ff;
+  box-shadow: inset 0 0 0 3px #000;
+}
+
 .placeholder {
   font-family: Fraunces, Georgia, serif;
   font-size: 56px;

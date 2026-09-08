@@ -24,6 +24,9 @@ GAME_FILES = {
     "mines": {"index.html", "styles.css", "game.js", "config.js", "favicon.svg"},
     "pentix": {"index.html", "styles.css", "game.js", "favicon.svg"},
     "lines": {"index.html", "styles.css", "game.js", "favicon.svg"},
+    "prince": {"index.html", "styles.css", "game.js", "favicon.svg"},
+    "arkanoid": {"index.html", "styles.css", "game.js", "favicon.svg"},
+    "alleycat": {"index.html", "styles.css", "game.js", "favicon.svg"},
 }
 
 DIFFICULTIES = {

@@ -9,6 +9,9 @@ COPY index.html portal.css favicon.svg 404.html /app/
 COPY mines /app/mines
 COPY pentix /app/pentix
 COPY lines /app/lines
+COPY prince /app/prince
+COPY arkanoid /app/arkanoid
+COPY alleycat /app/alleycat
 
 ENV PYTHONUNBUFFERED=1
 EXPOSE 8080

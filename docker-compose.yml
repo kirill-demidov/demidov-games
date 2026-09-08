@@ -30,6 +30,9 @@ services:
       - ./mines:/app/mines
       - ./pentix:/app/pentix
       - ./lines:/app/lines
+      - ./prince:/app/prince
+      - ./arkanoid:/app/arkanoid
+      - ./alleycat:/app/alleycat
     depends_on:
       db:
         condition: service_healthy

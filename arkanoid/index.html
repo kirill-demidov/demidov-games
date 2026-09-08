@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Arkanoid — Demidov Games</title>
+  <meta name="description" content="Классический арканоид: каретка, шар, кирпичи и капсулы." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="home" href="/">← Demidov Games</a>
+  <div class="hud">
+    <span>SCORE <b id="score">0</b></span>
+    <span>LIVES <b id="lives">3</b></span>
+    <span>ROUND <b id="round">1</b></span>
+  </div>
+  <canvas id="c" width="480" height="560"></canvas>
+  <p class="hint">Мышь / стрелки · пробел — старт / лазер</p>
+  <script src="game.js"></script>
+</body>
+</html>

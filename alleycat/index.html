@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Alley Cat — Demidov Games</title>
+  <meta name="description" content="Кот бежит вдоль дома и запрыгивает в окна — в духе Alley Cat 1983." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="home" href="/">← Demidov Games</a>
+  <div class="hud">
+    <span>SCORE <b id="score">0</b></span>
+    <span>MICE <b id="mice">0/3</b></span>
+    <span>LIVES <b id="lives">3</b></span>
+  </div>
+  <canvas id="c" width="640" height="400"></canvas>
+  <p class="hint">← → бег · ↑ прыжок в окно · внутри лови мышей, пёс кусает</p>
+  <div class="pad">
+    <button type="button" data-k="left">◀</button>
+    <button type="button" data-k="up">▲</button>
+    <button type="button" data-k="right">▶</button>
+  </div>
+  <script src="game.js"></script>
+</body>
+</html>

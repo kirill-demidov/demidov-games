@@ -1,0 +1,66 @@
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  min-height: 100vh;
+  background: #140c08;
+  color: #e8d5b5;
+  font-family: "Courier New", monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 12px 88px;
+}
+.home { align-self: flex-start; color: #d4a24c; text-decoration: none; font-size: 12px; }
+.hud {
+  width: min(640px, 100%);
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin: 8px 0;
+  letter-spacing: .08em;
+}
+#hp { color: #c45; }
+canvas {
+  background: #2a1810;
+  image-rendering: pixelated;
+  width: min(640px, 100%);
+  border: 3px solid #6a4228;
+  display: block;
+}
+.hint { font-size: 12px; color: #a89070; }
+.pad {
+  display: none;
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  padding: 10px;
+  background: #140c08;
+}
+.pad button {
+  height: 46px;
+  background: #2a1810;
+  color: #e8d5b5;
+  border: 2px solid #6a4228;
+  font-size: 16px;
+}
+.msg {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,6,4,.86);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 12px;
+  padding: 24px;
+}
+.msg[hidden] { display: none; }
+.msg h1 { letter-spacing: .4em; margin: 0; color: #d4a24c; }
+.msg button {
+  background: #d4a24c;
+  border: 0;
+  font: 700 16px "Courier New", monospace;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+@media (max-width: 720px) { .pad { display: grid; } }
