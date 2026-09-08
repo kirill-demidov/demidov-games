@@ -2,11 +2,11 @@
   "use strict";
 
   const COLS = 12;
-  const ROWS = 20;
-  const SIZE = 20;
+  const ROWS = 22;
+  const SIZE = 16;
   const BEST_KEY = "pentix.best.v1";
 
-  const COLORS = ["#0ff", "#f0f", "#ff0", "#0f0", "#f80", "#88f", "#fff"];
+  const COLORS = ["#55ffff", "#ff55ff", "#ffff55", "#55ff55", "#ff5555", "#5555ff", "#ffffff"];
 
   function rot(cells) {
     const r = cells.map(([y, x]) => [x, -y]);
@@ -194,15 +194,27 @@
   }
 
   function drawCell(g, x, y, color, s) {
+    const px = x * s;
+    const py = y * s;
     g.fillStyle = color;
-    g.fillRect(x * s, y * s, s - 1, s - 1);
-    g.fillStyle = "rgba(255,255,255,.25)";
-    g.fillRect(x * s, y * s, s - 1, 2);
+    g.fillRect(px, py, s, s);
+    g.fillStyle = "rgba(0,0,0,.55)";
+    g.fillRect(px + s - 2, py, 2, s);
+    g.fillRect(px, py + s - 2, s, 2);
+    g.fillStyle = "rgba(255,255,255,.45)";
+    g.fillRect(px, py, s - 2, 2);
+    g.fillRect(px, py, 2, s - 2);
   }
 
   function draw() {
-    ctx.fillStyle = "#020208";
+    ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, well.width, well.height);
+    ctx.fillStyle = "#1a1a1a";
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        ctx.fillRect(c * SIZE + 1, r * SIZE + 1, SIZE - 2, SIZE - 2);
+      }
+    }
     if (!state.grid.length || !state.piece) return;
     for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < COLS; c++) {

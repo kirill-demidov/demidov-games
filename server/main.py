@@ -21,7 +21,7 @@ STATIC_FILES = {
     "CNAME",
 }
 GAME_FILES = {
-    "mines": {"index.html", "styles.css", "game.js", "config.js", "favicon.svg"},
+    "mines": {"index.html", "styles.css", "winmine.html", "WINMINE-LICENSE.txt", "favicon.svg"},
     "pentix": {"index.html", "styles.css", "game.js", "favicon.svg"},
     "lines": {"index.html", "styles.css", "game.js", "favicon.svg"},
     "prince": {"index.html", "styles.css", "game.js", "favicon.svg"},

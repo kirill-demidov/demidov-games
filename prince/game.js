@@ -258,91 +258,123 @@
     document.getElementById("room").textContent = "зал " + (roomI + 1);
   }
 
-  function drawKid(x, y, face, sword) {
+  function roundRect(x, y, w, h, fill) {
+    ctx.fillStyle = fill;
+    ctx.fillRect(x, y, w, h);
+  }
+
+  function drawKid(x, y, face, sword, flash) {
     ctx.save();
     ctx.translate(x, y);
     ctx.scale(face, 1);
-    ctx.fillStyle = p.inv > 0 && Math.floor(performance.now() / 80) % 2 ? "#fff" : "#f2e6d4";
-    ctx.fillRect(-6, -38, 12, 14);
-    ctx.fillStyle = "#c43c3c";
-    ctx.fillRect(-8, -42, 16, 6);
-    ctx.fillStyle = "#ece6dc";
-    ctx.fillRect(-8, -24, 16, 18);
-    ctx.fillStyle = "#3a2a18";
-    ctx.fillRect(-7, -6, 6, 16);
-    ctx.fillRect(1, -6, 6, 16);
+    const skin = flash ? "#fff6e8" : "#e8c9a0";
+    roundRect(-7, -40, 13, 11, skin);
+    roundRect(-9, -44, 18, 6, "#1a120c");
+    roundRect(-11, -42, 6, 8, "#1a120c");
+    roundRect(4, -42, 6, 8, "#1a120c");
+    roundRect(-4, -36, 3, 2, "#3a2010");
+    roundRect(-9, -29, 18, 8, "#c42c2c");
+    roundRect(-10, -22, 20, 16, "#f4efe4");
+    roundRect(-8, -6, 5, 18, "#f4efe4");
+    roundRect(2, -6, 5, 18, "#f4efe4");
+    roundRect(-9, 10, 7, 3, "#c9a06a");
+    roundRect(1, 10, 7, 3, "#c9a06a");
     if (sword) {
-      ctx.fillStyle = "#ddd";
-      ctx.fillRect(10, -28, 22, 3);
-      ctx.fillStyle = "#c9a227";
-      ctx.fillRect(8, -30, 4, 7);
+      roundRect(10, -26, 24, 3, "#d8dce0");
+      roundRect(8, -29, 5, 8, "#b8862a");
+      roundRect(32, -27, 4, 5, "#8a9aa8");
     }
     ctx.restore();
   }
 
+  function drawGuard(g) {
+    const gy = floorY(g.r);
+    ctx.save();
+    ctx.translate(g.x, gy);
+    ctx.scale(g.face, 1);
+    roundRect(-8, -42, 16, 12, "#c9a07a");
+    roundRect(-10, -46, 20, 8, "#2a2038");
+    roundRect(-11, -30, 22, 20, "#3a2a68");
+    roundRect(-8, -10, 6, 16, "#2a2038");
+    roundRect(2, -10, 6, 16, "#2a2038");
+    roundRect(10, -28, 22, 3, "#c0c4c8");
+    ctx.restore();
+  }
+
   function draw() {
-    ctx.fillStyle = "#24160f";
+    const sky = ctx.createLinearGradient(0, 0, 0, H);
+    sky.addColorStop(0, "#1a1028");
+    sky.addColorStop(1, "#3a2818");
+    ctx.fillStyle = sky;
     ctx.fillRect(0, 0, W, H);
-    ctx.fillStyle = "#3a2418";
-    ctx.fillRect(0, 0, W, 28);
+
     for (let r = 0; r < ROWS; r++) {
       for (let c = 0; c < COLS; c++) {
         const t = tiles[r][c];
         const x = c * TW;
         const y = r * TH;
-        if (t === T.AIR) continue;
+        ctx.fillStyle = (c + r) % 2 ? "#c4a06a" : "#b89058";
+        ctx.fillRect(x, y, TW, TH);
+        ctx.fillStyle = "#8a6a38";
+        ctx.fillRect(x + TW - 8, y, 8, TH);
+        ctx.fillStyle = "#d8b888";
+        ctx.fillRect(x + 6, y + 10, 18, 10);
+        ctx.fillRect(x + 28, y + 42, 18, 10);
+        if (t === T.AIR) {
+          ctx.fillStyle = "#140c18";
+          ctx.fillRect(x + 4, y + 28, TW - 12, TH - 28);
+          continue;
+        }
         if (t === T.SPIKE) {
-          ctx.fillStyle = "#889";
+          ctx.fillStyle = "#9aa0a8";
           for (let i = 0; i < 4; i++) {
             ctx.beginPath();
-            ctx.moveTo(x + 8 + i * 14, y + TH - 16);
-            ctx.lineTo(x + 14 + i * 14, y + TH - 40);
-            ctx.lineTo(x + 20 + i * 14, y + TH - 16);
+            ctx.moveTo(x + 8 + i * 14, y + TH - 18);
+            ctx.lineTo(x + 14 + i * 14, y + TH - 48);
+            ctx.lineTo(x + 20 + i * 14, y + TH - 18);
             ctx.fill();
           }
         }
         if (t === T.CHOMP) {
           const open = Math.floor(performance.now() / 700) % 2 === 0;
-          ctx.fillStyle = "#6a3";
-          ctx.fillRect(x + 8, y + TH - 28, 48, 12);
-          ctx.fillStyle = "#3a2";
-          ctx.fillRect(x + 8, y + TH - (open ? 70 : 40), 48, 8);
+          roundRect(x + 10, y + TH - 30, 44, 14, "#4a7a28");
+          roundRect(x + 10, y + TH - (open ? 78 : 44), 44, 10, "#2e5418");
+          ctx.fillStyle = "#c8d0c0";
+          for (let i = 0; i < 5; i++) ctx.fillRect(x + 14 + i * 8, y + TH - 30, 3, 8);
         }
         if (t === T.GATE && !gateOpen) {
-          ctx.fillStyle = "#6a4a28";
-          ctx.fillRect(x + 18, y + 20, 28, TH - 36);
+          roundRect(x + 16, y + 16, 32, TH - 32, "#6a3a18");
+          ctx.fillStyle = "#2a180c";
+          for (let i = 0; i < 5; i++) ctx.fillRect(x + 20, y + 22 + i * 18, 24, 4);
         }
         if (t === T.BTN) {
-          ctx.fillStyle = "#c9a227";
-          ctx.fillRect(x + 16, y + TH - 24, 32, 8);
+          roundRect(x + 18, y + TH - 26, 28, 8, "#d4a024");
+          roundRect(x + 20, y + TH - 28, 24, 4, "#f0d060");
         }
         if (t === T.POTION) {
-          ctx.fillStyle = "#3c8";
+          ctx.fillStyle = "#2ecf7a";
           ctx.beginPath();
-          ctx.arc(x + 32, y + TH - 40, 8, 0, Math.PI * 2);
+          ctx.arc(x + 32, y + TH - 44, 9, 0, Math.PI * 2);
           ctx.fill();
+          roundRect(x + 28, y + TH - 58, 8, 10, "#d8e8e0");
+          roundRect(x + 26, y + TH - 62, 12, 5, "#c9a227");
         }
         if (t === T.EXIT) {
-          ctx.fillStyle = "#d4a24c";
-          ctx.fillRect(x + 10, y + 30, 44, TH - 48);
-          ctx.fillStyle = "#1a0f08";
-          ctx.fillRect(x + 18, y + 40, 28, TH - 68);
+          roundRect(x + 8, y + 24, 48, TH - 40, "#e0b45a");
+          roundRect(x + 16, y + 36, 32, TH - 62, "#1a0c08");
+          roundRect(x + 20, y + 8, 24, 18, "#c4923e");
         }
-        if (t !== T.AIR && t !== T.GATE) {
-          ctx.fillStyle = t === T.LOOSE ? "#8a6238" : "#6a4228";
-          ctx.fillRect(x, y + TH - 16, TW, 16);
-          ctx.fillStyle = "#4a2e1c";
-          ctx.fillRect(x, y + TH - 16, TW, 3);
-        }
+        const floor = t === T.LOOSE ? "#c9a06a" : "#8a5a28";
+        roundRect(x, y + TH - 18, TW, 18, floor);
+        ctx.fillStyle = "#5a3818";
+        ctx.fillRect(x, y + TH - 18, TW, 3);
+        ctx.fillStyle = "#d4b07a";
+        for (let i = 0; i < 4; i++) ctx.fillRect(x + 6 + i * 14, y + TH - 12, 8, 6);
       }
     }
-    if (guard) {
-      ctx.fillStyle = "#4a2a2a";
-      ctx.fillRect(guard.x, floorY(guard.r) - 40, 14, 40);
-      ctx.fillStyle = "#ccc";
-      ctx.fillRect(guard.x + (guard.face > 0 ? 12 : -18), floorY(guard.r) - 30, 20, 3);
-    }
-    drawKid(p.x, p.y, p.face, p.sword);
+    if (guard) drawGuard(guard);
+    const flash = p.inv > 0 && Math.floor(performance.now() / 80) % 2;
+    drawKid(p.x, p.y, p.face, p.sword, flash);
   }
 
   let last = 0;

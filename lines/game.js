@@ -170,15 +170,13 @@
       if (game.sel === i) cell.classList.add("goal");
       if (game.cells[i]) {
         const b = document.createElement("div");
-        b.className = "ball" + (game.sel === i ? " sel" : "");
-        b.style.background = COLORS[game.cells[i] - 1];
+        b.className = "ball c" + game.cells[i] + (game.sel === i ? " sel" : "");
         cell.appendChild(b);
       } else {
         const hint = game.next.find((n) => n.i === i);
         if (hint) {
           const h = document.createElement("div");
-          h.className = "hint";
-          h.style.background = COLORS[hint.color - 1];
+          h.className = "hint c" + hint.color;
           cell.appendChild(h);
         }
       }
@@ -186,10 +184,7 @@
     nextEl.innerHTML = "";
     for (const n of game.next) {
       const d = document.createElement("div");
-      d.className = "ball";
-      d.style.width = "22px";
-      d.style.height = "22px";
-      d.style.background = COLORS[n.color - 1];
+      d.className = "ball c" + n.color;
       nextEl.appendChild(d);
     }
     scoreEl.textContent = String(game.score);
@@ -206,8 +201,7 @@
       paint();
       boardEl.children[p[i]].classList.add("path");
       const ghost = document.createElement("div");
-      ghost.className = "ball";
-      ghost.style.background = COLORS[color - 1];
+      ghost.className = "ball c" + color;
       boardEl.children[p[i]].appendChild(ghost);
       await new Promise((res) => setTimeout(res, 42));
     }

@@ -1,1 +1,0 @@
-window.SAPPER_API = "";

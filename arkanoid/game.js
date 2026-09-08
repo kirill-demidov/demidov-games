@@ -5,7 +5,8 @@
   const H = 560;
   const canvas = document.getElementById("c");
   const ctx = canvas.getContext("2d");
-  const COLORS = ["#e33", "#f80", "#fd5", "#3c3", "#3ae", "#a4f"];
+  const COLORS = ["#e33a3a", "#f07818", "#e8c430", "#2db84a", "#2a8cff", "#7a4cff"];
+  const CAP = { E: "#e33a3a", S: "#f07818", L: "#3ad0e8", C: "#2db84a" };
 
   const LEVELS = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
@@ -155,45 +156,88 @@
     hud();
   }
 
+  function rrect(x, y, w, h, r) {
+    ctx.beginPath();
+    if (typeof ctx.roundRect === "function") ctx.roundRect(x, y, w, h, r);
+    else {
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+    }
+  }
+
+  function capsule(x, y, w, h, fill) {
+    ctx.fillStyle = fill;
+    rrect(x, y, w, h, h / 2);
+    ctx.fill();
+  }
+
   function draw() {
-    ctx.fillStyle = "#080810";
+    ctx.fillStyle = "#020018";
     ctx.fillRect(0, 0, W, H);
-    ctx.fillStyle = "#445";
-    ctx.fillRect(0, 0, 8, H);
-    ctx.fillRect(W - 8, 0, 8, H);
-    ctx.fillRect(0, 0, W, 8);
+    ctx.fillStyle = "#8ec8ff";
+    for (let i = 0; i < 40; i++) {
+      const sx = (i * 97) % W;
+      const sy = (i * 53) % H;
+      ctx.fillRect(sx, sy, 1, 1);
+    }
+    ctx.fillStyle = "#9aa4b0";
+    ctx.fillRect(0, 0, 10, H);
+    ctx.fillRect(W - 10, 0, 10, H);
+    ctx.fillRect(0, 0, W, 10);
+    ctx.fillStyle = "#d8dee6";
+    ctx.fillRect(2, 0, 3, H);
+    ctx.fillRect(W - 5, 0, 3, H);
+
     for (const br of bricks) {
       if (br.hp <= 0) continue;
-      ctx.fillStyle = br.gold ? "#ccc" : COLORS[(br.hp - 1) % COLORS.length];
-      ctx.fillRect(br.x, br.y, BW, BH);
-      ctx.fillStyle = "rgba(255,255,255,.25)";
-      ctx.fillRect(br.x, br.y, BW, 3);
+      const col = br.gold ? "#c8ccd0" : COLORS[(br.hp - 1) % COLORS.length];
+      ctx.fillStyle = col;
+      rrect(br.x, br.y, BW, BH, 3);
+      ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,.45)";
+      ctx.fillRect(br.x + 2, br.y + 1, BW - 8, 3);
+      ctx.fillStyle = "rgba(0,0,0,.28)";
+      ctx.fillRect(br.x + 2, br.y + BH - 3, BW - 4, 2);
     }
-    ctx.fillStyle = "#fd5";
-    ctx.fillRect(paddle.x - paddle.w / 2, paddle.y, paddle.w, 10);
-    ctx.fillStyle = "#fff";
+
+    const px = paddle.x - paddle.w / 2;
+    capsule(px, paddle.y, paddle.w, 12, laser ? "#ff4a4a" : "#d8dce4");
+    ctx.fillStyle = "#c42828";
+    ctx.fillRect(px + 10, paddle.y + 3, paddle.w - 20, 6);
+    ctx.fillStyle = "rgba(255,255,255,.5)";
+    ctx.fillRect(px + 8, paddle.y + 2, paddle.w - 16, 2);
+
     for (const b of balls) {
+      const g = ctx.createRadialGradient(b.x - 2, b.y - 2, 1, b.x, b.y, 6);
+      g.addColorStop(0, "#fff");
+      g.addColorStop(1, "#9ab0c8");
+      ctx.fillStyle = g;
       ctx.beginPath();
       ctx.arc(b.x, b.y, 5, 0, Math.PI * 2);
       ctx.fill();
     }
+    ctx.font = "700 10px Tahoma, sans-serif";
+    ctx.textAlign = "center";
     for (const d of drops) {
-      ctx.fillStyle = "#6f6";
-      ctx.fillRect(d.x - 10, d.y, 20, 12);
-      ctx.fillStyle = "#000";
-      ctx.font = "10px monospace";
-      ctx.fillText(d.k, d.x - 4, d.y + 10);
-    }
-    ctx.fillStyle = "#f66";
-    for (const l of lasers) ctx.fillRect(l.x - 1, l.y, 2, 12);
-    if (over) {
-      ctx.fillStyle = "rgba(0,0,0,.6)";
-      ctx.fillRect(0, 0, W, H);
+      capsule(d.x - 12, d.y, 24, 12, CAP[d.k] || "#6f6");
       ctx.fillStyle = "#fff";
-      ctx.font = "22px monospace";
+      ctx.fillText(d.k, d.x, d.y + 10);
+    }
+    ctx.textAlign = "left";
+    ctx.fillStyle = "#ff5a5a";
+    for (const l of lasers) ctx.fillRect(l.x - 1, l.y, 2, 14);
+    if (over) {
+      ctx.fillStyle = "rgba(2,0,24,.72)";
+      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = "#ffe14a";
+      ctx.font = "700 22px Tahoma, sans-serif";
       ctx.textAlign = "center";
       ctx.fillText("GAME OVER", W / 2, H / 2);
-      ctx.font = "12px monospace";
+      ctx.font = "12px Tahoma, sans-serif";
+      ctx.fillStyle = "#d8dee6";
       ctx.fillText("пробел — заново", W / 2, H / 2 + 24);
       ctx.textAlign = "left";
     }

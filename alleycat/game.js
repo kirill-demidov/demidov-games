@@ -150,71 +150,118 @@
     hud();
   }
 
+  const CGA = { k: "#000000", c: "#55ffff", m: "#ff55ff", w: "#ffffff" };
+
   function drawCat(x, y, face) {
     ctx.save();
     ctx.translate(x, y);
     ctx.scale(face, 1);
-    ctx.fillStyle = "#ff0";
-    ctx.fillRect(-10, -18, 20, 14);
-    ctx.fillRect(6, -28, 8, 10);
-    ctx.fillRect(-12, -28, 6, 8);
-    ctx.fillRect(-8, -4, 5, 10);
+    ctx.fillStyle = CGA.w;
+    ctx.fillRect(-12, -16, 22, 12);
+    ctx.fillRect(6, -24, 10, 10);
+    ctx.fillRect(-14, -26, 8, 10);
+    ctx.fillRect(12, -20, 8, 4);
+    ctx.fillRect(-18, -10, 8, 4);
+    ctx.fillRect(-10, -4, 5, 10);
     ctx.fillRect(2, -4, 5, 10);
-    ctx.fillStyle = "#f0f";
-    ctx.fillRect(8, -24, 3, 3);
+    ctx.fillStyle = CGA.m;
+    ctx.fillRect(12, -22, 3, 3);
+    ctx.fillRect(-12, -14, 6, 3);
+    ctx.fillRect(8, -8, 10, 3);
     ctx.restore();
   }
 
+  function brickWall(x, y, w, h) {
+    ctx.fillStyle = CGA.m;
+    ctx.fillRect(x, y, w, h);
+    ctx.fillStyle = CGA.k;
+    for (let yy = y; yy < y + h; yy += 10) {
+      ctx.fillRect(x, yy, w, 1);
+      const off = ((yy / 10) | 0) % 2 ? 12 : 0;
+      for (let xx = x + off; xx < x + w; xx += 24) ctx.fillRect(xx, yy, 1, 10);
+    }
+  }
+
   function draw() {
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = CGA.k;
     ctx.fillRect(0, 0, W, H);
     if (mode === "street") {
-      ctx.fillStyle = "#0aa";
-      ctx.fillRect(40, 20, 560, 300);
-      ctx.fillStyle = "#000";
-      ctx.fillRect(48, 28, 544, 284);
+      ctx.fillStyle = CGA.w;
+      ctx.beginPath();
+      ctx.arc(72, 36, 16, 0, Math.PI * 2);
+      ctx.fill();
+      brickWall(36, 16, 568, 312);
+      ctx.fillStyle = CGA.k;
+      ctx.fillRect(44, 24, 552, 296);
+      brickWall(44, 24, 552, 296);
       for (const w of wins) {
-        ctx.fillStyle = w.kind === "dog" ? "#f0f" : "#0ff";
-        ctx.fillRect(w.x, w.y, 56, 48);
-        ctx.fillStyle = "#000";
-        ctx.fillRect(w.x + 6, w.y + 6, 20, 18);
-        ctx.fillRect(w.x + 30, w.y + 6, 20, 18);
+        ctx.fillStyle = CGA.c;
+        ctx.fillRect(w.x, w.y, 58, 50);
+        ctx.fillStyle = CGA.k;
+        ctx.fillRect(w.x + 4, w.y + 4, 24, 20);
+        ctx.fillRect(w.x + 30, w.y + 4, 24, 20);
+        ctx.fillRect(w.x + 4, w.y + 26, 24, 20);
+        ctx.fillRect(w.x + 30, w.y + 26, 24, 20);
+        ctx.fillStyle = w.kind === "dog" ? CGA.m : CGA.w;
+        ctx.fillRect(w.x + 18, w.y + 28, 22, 16);
         if (w.kind === "dog") {
-          ctx.fillStyle = "#f0f";
-          ctx.fillRect(w.x + 18, w.y + 28, 20, 12);
+          ctx.fillRect(w.x + 34, w.y + 22, 10, 10);
+        } else {
+          ctx.fillStyle = CGA.w;
+          ctx.fillRect(w.x + 22, w.y + 18, 14, 10);
         }
       }
-      ctx.fillStyle = "#0ff";
-      ctx.fillRect(0, 352, W, 8);
-      ctx.fillStyle = "#ff0";
-      for (let x = 20; x < W; x += 40) ctx.fillRect(x, 360, 18, 4);
+      ctx.fillStyle = CGA.c;
+      ctx.fillRect(0, 328, W, 72);
+      ctx.fillStyle = CGA.k;
+      for (let x = 0; x < W; x += 28) {
+        ctx.fillRect(x + 8, 300, 8, 36);
+        ctx.fillRect(x, 328, 24, 4);
+      }
+      ctx.fillStyle = CGA.w;
+      ctx.fillRect(18, 348, 22, 28);
+      ctx.fillRect(600, 348, 22, 28);
+      ctx.fillStyle = CGA.m;
+      ctx.fillRect(22, 352, 14, 10);
+      ctx.fillRect(604, 352, 14, 10);
     } else {
-      ctx.fillStyle = "#202";
+      ctx.fillStyle = CGA.k;
       ctx.fillRect(0, 0, W, H);
-      ctx.fillStyle = "#0aa";
-      ctx.fillRect(0, 336, W, 64);
-      ctx.fillStyle = "#f0f";
-      for (const [px, py, pw] of indoor.plat) ctx.fillRect(px, py, pw, 10);
-      ctx.fillStyle = "#fff";
+      brickWall(0, 0, W, 220);
+      ctx.fillStyle = CGA.c;
+      ctx.fillRect(0, 328, W, 72);
+      ctx.fillStyle = CGA.m;
+      for (const [px, py, pw] of indoor.plat) {
+        ctx.fillRect(px, py, pw, 10);
+        ctx.fillStyle = CGA.w;
+        ctx.fillRect(px, py, pw, 2);
+        ctx.fillStyle = CGA.m;
+      }
+      ctx.fillStyle = CGA.c;
+      ctx.fillRect(8, 220, 28, 108);
+      ctx.fillRect(604, 220, 28, 108);
+      ctx.fillStyle = CGA.w;
       for (const m of indoor.mice) {
         ctx.fillRect(m.x - 8, m.y - 6, 16, 8);
-        ctx.fillRect(m.x + 6, m.y - 10, 8, 4);
+        ctx.fillRect(m.x + 8, m.y - 4, 10, 3);
+        ctx.fillRect(m.x - 10, m.y - 10, 4, 4);
       }
-      ctx.fillStyle = "#f0f";
-      ctx.fillRect(indoor.dog.x - 14, indoor.dog.y - 16, 28, 16);
-      ctx.fillRect(indoor.dog.x + 10, indoor.dog.y - 24, 10, 10);
-      ctx.fillStyle = "#0ff";
-      ctx.fillRect(12, 250, 24, 80);
+      ctx.fillStyle = CGA.m;
+      ctx.fillRect(indoor.dog.x - 16, indoor.dog.y - 18, 32, 18);
+      ctx.fillRect(indoor.dog.x + 10, indoor.dog.y - 26, 12, 12);
+      ctx.fillStyle = CGA.w;
+      ctx.fillRect(indoor.dog.x + 16, indoor.dog.y - 22, 4, 3);
     }
     drawCat(cat.x, cat.y, cat.face);
     if (over) {
-      ctx.fillStyle = "rgba(0,0,0,.7)";
+      ctx.fillStyle = "rgba(0,0,0,.75)";
       ctx.fillRect(0, 0, W, H);
-      ctx.fillStyle = "#ff0";
+      ctx.fillStyle = CGA.w;
       ctx.font = "28px monospace";
       ctx.textAlign = "center";
       ctx.fillText("CAT OVER", W / 2, H / 2);
       ctx.font = "14px monospace";
+      ctx.fillStyle = CGA.c;
       ctx.fillText("R — заново", W / 2, H / 2 + 28);
       ctx.textAlign = "left";
     }
