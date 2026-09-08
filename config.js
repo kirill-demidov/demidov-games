@@ -1,0 +1,1 @@
+window.SAPPER_API = "";

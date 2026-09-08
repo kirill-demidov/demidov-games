@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Сапёр.exe — классический Minesweeper в браузере</title>
+  <meta name="description" content="Классический сапёр в окне Windows 95. Играйте в браузере, ставьте флаги, бейте рекорды." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700;800&family=Tahoma&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="cloud c1" aria-hidden="true"></div>
+    <div class="cloud c2" aria-hidden="true"></div>
+    <div class="cloud c3" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <span class="badge">★ GitHub Pages</span>
+      <h1>Сапёр<span class="dot">.exe</span></h1>
+      <p>Классическое поле Windows 95 в браузере. Открой клетки, не подорвись на мине, поставь лучшее время.</p>
+    </div>
+    <svg class="wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="#f4f4ff" d="M0,40 C240,80 480,0 720,32 C960,64 1200,8 1440,40 L1440,80 L0,80 Z"></path>
+    </svg>
+  </header>
+
+  <main class="stage">
+    <section class="win" id="gameWindow" aria-label="Окно игры Сапёр">
+      <div class="titlebar">
+        <div class="t">
+          <span class="ico" aria-hidden="true">
+            <svg viewBox="0 0 16 16" width="14" height="14"><circle cx="8" cy="9" r="4" fill="#111"/><g stroke="#111" stroke-width="1.4" stroke-linecap="round"><line x1="8" y1="2" x2="8" y2="5"/><line x1="8" y1="13" x2="8" y2="15"/><line x1="2" y1="9" x2="4" y2="9"/><line x1="12" y1="9" x2="14" y2="9"/><line x1="3.5" y1="4.5" x2="5.2" y2="6.2"/><line x1="10.8" y1="11.8" x2="12.5" y2="13.5"/><line x1="12.5" y1="4.5" x2="10.8" y2="6.2"/><line x1="5.2" y1="11.8" x2="3.5" y2="13.5"/></g><circle cx="6.6" cy="7.6" r=".9" fill="#fff"/></svg>
+          </span>
+          <span>Minesweeper.exe</span>
+        </div>
+        <div class="tbtns">
+          <button class="tbtn" type="button" aria-label="Свернуть">_</button>
+          <button class="tbtn" type="button" aria-label="Развернуть">▢</button>
+          <button class="tbtn" type="button" aria-label="Закрыть">✕</button>
+        </div>
+      </div>
+
+      <div class="menubar">
+        <div class="menu">
+          <button class="menu-btn" type="button" id="gameMenuBtn"><u>И</u>гра</button>
+          <div class="menu-drop" id="gameMenu" hidden>
+            <button type="button" data-action="new">Новая игра<span>F2</span></button>
+            <hr />
+            <button type="button" data-diff="beginner">Новичок <em>9×9 · 10</em></button>
+            <button type="button" data-diff="intermediate">Любитель <em>16×16 · 40</em></button>
+            <button type="button" data-diff="expert">Профессионал <em>30×16 · 99</em></button>
+            <hr />
+            <button type="button" data-action="marks">Знаки вопроса <b id="marksState">выкл</b></button>
+            <button type="button" data-action="clear-scores">Очистить локальный кэш</button>
+          </div>
+        </div>
+        <div class="menu">
+          <button class="menu-btn" type="button" id="helpMenuBtn"><u>С</u>правка</button>
+          <div class="menu-drop" id="helpMenu" hidden>
+            <button type="button" data-action="help">Как играть</button>
+            <button type="button" data-action="about">О программе</button>
+          </div>
+        </div>
+        <span class="menu-hint">F2 — новая игра</span>
+      </div>
+
+      <div class="app">
+        <div class="gameframe">
+          <div class="hud">
+            <div class="led" id="mineCounter" aria-label="Осталось мин">040</div>
+            <button class="smiley" id="smiley" type="button" aria-label="Новая игра">🙂</button>
+            <div class="led" id="timer" aria-label="Время">000</div>
+          </div>
+          <div class="board" id="board" role="grid" aria-label="Игровое поле"></div>
+          <div class="statusline">
+            <span id="diffLabel">16×16 — 40 мин</span>
+          </div>
+        </div>
+
+        <aside class="panel">
+          <div class="panelbox">
+            <p class="small">Имя спросим перед первой игрой. Победа пишется в общую таблицу PostgreSQL. На телефоне: нажатие открывает клетку, кнопка <b>🚩 Флаг</b> ставит флаги.</p>
+            <button class="btn flag-btn" id="flagBtn" type="button" aria-pressed="false">
+              🚩 Режим флага: <b>ВЫКЛ</b>
+            </button>
+          </div>
+          <div class="panelbox lbbox">
+            <h3>🏆 Лучшие результаты <span class="lb-status" id="lbStatus">подключение…</span></h3>
+            <div class="lb-tabs" id="lbTabs">
+              <button type="button" class="active" data-lb="intermediate">Любитель</button>
+              <button type="button" data-lb="beginner">Новичок</button>
+              <button type="button" data-lb="expert">Профи</button>
+            </div>
+            <div id="leaderboard"></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="win prizes" aria-labelledby="howtoTitle">
+      <div class="titlebar">
+        <div class="t"><span>🏆 Как победить</span></div>
+        <div class="tbtns"><button class="tbtn" type="button">✕</button></div>
+      </div>
+      <div class="prizes-body">
+        <p>Открой все клетки без мин как можно быстрее. Победа уходит в общую таблицу на PostgreSQL — меньшее время поднимает выше.</p>
+        <ul>
+          <li><b>ЛКМ / тап</b> — открыть клетку</li>
+          <li><b>ПКМ / долгий тап / 🚩</b> — поставить флаг</li>
+          <li><b>Двойной клик</b> по цифре — открыть соседей, если флаги уже расставлены</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <p>Сапёр.exe · классика Windows 95 в браузере · GitHub Pages</p>
+  </footer>
+
+  <div class="modal" id="nameModal" hidden>
+    <div class="win dialog">
+      <div class="titlebar">
+        <div class="t">Войти в таблицу</div>
+        <button class="tbtn" type="button" data-close="nameModal">✕</button>
+      </div>
+      <form class="dialog-body" id="nameForm">
+        <p>Как тебя записать в рекорды? Имя хранится только в этом браузере.</p>
+        <label>
+          Имя
+          <input id="nameInput" name="name" type="text" maxlength="24" autocomplete="nickname" required placeholder="Игрок" />
+        </label>
+        <div class="dialog-actions">
+          <button class="btn primary" type="submit">Начать ▶</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal" id="helpModal" hidden>
+    <div class="win dialog">
+      <div class="titlebar">
+        <div class="t">Справка</div>
+        <button class="tbtn" type="button" data-close="helpModal">✕</button>
+      </div>
+      <div class="dialog-body">
+        <p>На поле спрятаны мины. Цифра — сколько мин в соседних восьми клетках. Открой все безопасные клетки.</p>
+        <ul>
+          <li>Первый клик всегда безопасный.</li>
+          <li>Пустая клетка открывает область вокруг.</li>
+          <li>Флаг — если уверен, что там мина.</li>
+          <li>Смайлик или F2 — новая партия.</li>
+        </ul>
+        <div class="dialog-actions">
+          <button class="btn" type="button" data-close="helpModal">Понятно</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="aboutModal" hidden>
+    <div class="win dialog">
+      <div class="titlebar">
+        <div class="t">О программе</div>
+        <button class="tbtn" type="button" data-close="aboutModal">✕</button>
+      </div>
+      <div class="dialog-body">
+        <p><b>Minesweeper.exe</b></p>
+        <p>Веб-версия классического сапёра. Таблица рекордов живёт в PostgreSQL; если сервер недоступен, остаётся локальный кэш в браузере.</p>
+        <div class="dialog-actions">
+          <button class="btn" type="button" data-close="aboutModal">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="resultModal" hidden>
+    <div class="win dialog result">
+      <div class="titlebar">
+        <div class="t" id="resultTitle">Победа</div>
+        <button class="tbtn" type="button" data-close="resultModal">✕</button>
+      </div>
+      <div class="dialog-body result-body">
+        <div class="mascot" aria-hidden="true">💣</div>
+        <h2 id="resultHeading">Поле чисто</h2>
+        <dl class="stats">
+          <div><dt>Счёт</dt><dd id="statScore">—</dd></div>
+          <div><dt>Время</dt><dd id="statTime">—</dd></div>
+          <div><dt>Открыто</dt><dd id="statCleared">—</dd></div>
+          <div><dt>Игрок</dt><dd id="statPlayer">—</dd></div>
+        </dl>
+        <div class="dialog-actions">
+          <button class="btn primary" type="button" id="playAgain">↻ Ещё раз</button>
+          <button class="btn" type="button" id="saveImage">💾 Картинка счёта</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
