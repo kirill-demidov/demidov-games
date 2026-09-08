@@ -1,0 +1,197 @@
+:root {
+  --bg: #100e14;
+  --ink: #f4efe6;
+  --muted: #b7aea0;
+  --gold: #e8b86d;
+  --gold-d: #c4923e;
+  --card: #1b1822;
+  --line: rgba(232, 184, 109, .22);
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  min-height: 100vh;
+  font-family: Outfit, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  position: relative;
+  overflow-x: hidden;
+}
+
+a { color: inherit; }
+
+.glow {
+  position: fixed;
+  inset: -20% auto auto -10%;
+  width: 70vw;
+  height: 60vh;
+  background: radial-gradient(circle, rgba(232,184,109,.16), transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.top, main, .foot { position: relative; z-index: 1; }
+
+.top {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 24px 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: .02em;
+}
+.brand em { font-style: normal; color: var(--gold); }
+.mark {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--gold);
+  border-radius: 10px;
+  display: grid;
+  place-items: center;
+  font-family: Fraunces, Georgia, serif;
+  color: var(--gold);
+  font-size: 20px;
+}
+.tag {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.intro {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 72px 24px 36px;
+}
+.kicker {
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  font-size: 12px;
+  color: var(--gold);
+  margin: 0 0 12px;
+  font-weight: 600;
+}
+h1 {
+  font-family: Fraunces, Georgia, serif;
+  font-weight: 800;
+  font-size: clamp(36px, 6vw, 64px);
+  line-height: 1.05;
+  margin: 0 0 16px;
+  max-width: 14ch;
+}
+.lead {
+  max-width: 46ch;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.catalog {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 12px 24px 80px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.card.live:hover {
+  transform: translateY(-4px);
+  border-color: var(--gold);
+  box-shadow: 0 18px 40px rgba(0,0,0,.35);
+}
+.card.soon { opacity: .72; }
+
+.thumb {
+  height: 140px;
+  display: grid;
+  place-items: center;
+}
+.mines-thumb {
+  grid-template-columns: repeat(3, 28px);
+  grid-template-rows: repeat(3, 28px);
+  gap: 3px;
+  background: #2a2433;
+  justify-content: center;
+  align-content: center;
+}
+.mines-thumb span {
+  background: #c0c0c0;
+  border: 2px solid #fff;
+  border-bottom-color: #555;
+  border-right-color: #555;
+  display: grid;
+  place-items: center;
+  font: 700 12px Tahoma, sans-serif;
+  color: #222;
+}
+.mines-thumb .n { background: #bdbdbd; border: 1px solid #888; }
+.mines-thumb .n:nth-child(2) { color: #00c; }
+.mines-thumb .n:nth-child(5) { color: #080; }
+.mines-thumb .n:nth-child(6) { color: #c00; }
+.mines-thumb .mine { background: #222; color: #eee; border: 1px solid #111; }
+.mines-thumb .flag { color: #c00; }
+.placeholder {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 56px;
+  color: rgba(232,184,109,.35);
+  background: #15131a;
+}
+
+.card-body { padding: 18px 18px 20px; flex: 1; }
+.status {
+  font-size: 11px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+}
+.card.soon .status { color: var(--muted); }
+.card h2 {
+  font-family: Fraunces, Georgia, serif;
+  font-size: 28px;
+  margin: 6px 0 8px;
+}
+.card p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
+  font-size: 15px;
+}
+
+.foot {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 24px 40px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.foot a { color: var(--gold); }
+
+@media (max-width: 640px) {
+  .top { flex-direction: column; align-items: flex-start; }
+  .intro { padding-top: 40px; }
+}

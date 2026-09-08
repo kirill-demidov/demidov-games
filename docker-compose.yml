@@ -22,13 +22,12 @@ services:
       - "8090:8080"
     environment:
       DATABASE_URL: postgresql://sapper:sapper@db:5432/sapper
-      CORS_ORIGINS: "*"
+      CORS_ORIGINS: "https://demidov-games.com,https://www.demidov-games.com,http://localhost:8090,http://127.0.0.1:8090"
     volumes:
       - ./index.html:/app/index.html
-      - ./styles.css:/app/styles.css
-      - ./game.js:/app/game.js
-      - ./config.js:/app/config.js
+      - ./portal.css:/app/portal.css
       - ./favicon.svg:/app/favicon.svg
+      - ./mines:/app/mines
     depends_on:
       db:
         condition: service_healthy

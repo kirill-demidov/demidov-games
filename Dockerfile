@@ -5,7 +5,8 @@ COPY server/requirements.txt /app/server/requirements.txt
 RUN pip install --no-cache-dir -r /app/server/requirements.txt
 
 COPY server /app/server
-COPY index.html styles.css game.js config.js favicon.svg /app/
+COPY index.html portal.css favicon.svg 404.html /app/
+COPY mines /app/mines
 
 ENV PYTHONUNBUFFERED=1
 EXPOSE 8080

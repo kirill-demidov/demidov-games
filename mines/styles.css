@@ -58,6 +58,8 @@ img, svg { display: block; }
   letter-spacing: .4px;
   font-family: Outfit, Tahoma, sans-serif;
 }
+.badge a { color: inherit; text-decoration: none; }
+.badge a:hover { text-decoration: underline; }
 
 .hero h1 {
   font-family: Outfit, Tahoma, sans-serif;
@@ -466,6 +468,7 @@ img, svg { display: block; }
   font-size: 12px;
   padding: 8px 16px 32px;
 }
+.foot a { color: #5a4fcf; }
 
 .modal {
   position: fixed;

@@ -13,7 +13,14 @@ from psycopg_pool import ConnectionPool
 from pydantic import BaseModel, Field
 
 ROOT = Path(__file__).resolve().parent.parent
-STATIC_FILES = {"styles.css", "game.js", "config.js", "favicon.svg", "index.html"}
+STATIC_FILES = {
+    "index.html",
+    "portal.css",
+    "favicon.svg",
+    "404.html",
+    "CNAME",
+}
+MINES_FILES = {"index.html", "styles.css", "game.js", "config.js", "favicon.svg"}
 
 DIFFICULTIES = {
     "beginner": {"rows": 9, "cols": 9, "mines": 10},
@@ -222,6 +229,19 @@ def create_score(payload: ScoreIn, request: Request):
 @app.get("/")
 def index():
     return FileResponse(ROOT / "index.html")
+
+
+@app.get("/mines")
+@app.get("/mines/")
+def mines_index():
+    return FileResponse(ROOT / "mines" / "index.html")
+
+
+@app.get("/mines/{name}")
+def mines_static(name: str):
+    if name not in MINES_FILES:
+        raise HTTPException(404)
+    return FileResponse(ROOT / "mines" / name)
 
 
 @app.get("/{name}")
