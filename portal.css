@@ -154,6 +154,34 @@ h1 {
 .mines-thumb .n:nth-child(6) { color: #c00; }
 .mines-thumb .mine { background: #222; color: #eee; border: 1px solid #111; }
 .mines-thumb .flag { color: #c00; }
+
+.pentix-thumb {
+  grid-template-columns: repeat(4, 18px);
+  grid-template-rows: repeat(3, 18px);
+  gap: 2px;
+  background: #050505;
+  justify-content: center;
+  align-content: center;
+}
+.pentix-thumb span { background: transparent; }
+.pentix-thumb .a { background: #0ff; box-shadow: 1px 1px 0 #f0f; }
+
+.lines-thumb {
+  display: flex;
+  gap: 10px;
+  background: #1a222c;
+}
+.lines-thumb i {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: block;
+  box-shadow: inset -3px -3px 6px rgba(0,0,0,.35), inset 2px 2px 4px rgba(255,255,255,.35);
+}
+.lines-thumb .c1 { background: #e23d3d; }
+.lines-thumb .c2 { background: #3bb273; }
+.lines-thumb .c3 { background: #3aa0ff; }
+
 .placeholder {
   font-family: Fraunces, Georgia, serif;
   font-size: 56px;

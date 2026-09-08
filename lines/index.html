@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <title>Линии 98 — Demidov Games</title>
+  <meta name="description" content="Классические цветные линии: 9×9, пять в ряд, шарики едут только по свободному пути." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="bar">
+    <a class="home" href="/">← Demidov Games</a>
+    <h1>Линии 98</h1>
+    <button type="button" id="newGame">Новая</button>
+  </header>
+
+  <main class="wrap">
+    <aside class="side">
+      <div class="stat"><span>Счёт</span><b id="score">0</b></div>
+      <div class="stat"><span>Рекорд</span><b id="best">0</b></div>
+      <div class="next-box">
+        <span>Следующие</span>
+        <div id="next" class="next"></div>
+      </div>
+      <p class="help">Собери 5+ шариков одного цвета в ряд — горизонталь, вертикаль или диагональ. Ход только по свободным клеткам. Если линия собралась, новые шары не появляются.</p>
+    </aside>
+    <div class="board" id="board" role="grid" aria-label="Поле 9 на 9"></div>
+  </main>
+
+  <p class="toast" id="toast" hidden>Нет пути</p>
+  <script src="game.js"></script>
+</body>
+</html>

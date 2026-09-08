@@ -28,6 +28,8 @@ services:
       - ./portal.css:/app/portal.css
       - ./favicon.svg:/app/favicon.svg
       - ./mines:/app/mines
+      - ./pentix:/app/pentix
+      - ./lines:/app/lines
     depends_on:
       db:
         condition: service_healthy

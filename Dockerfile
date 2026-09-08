@@ -7,6 +7,8 @@ RUN pip install --no-cache-dir -r /app/server/requirements.txt
 COPY server /app/server
 COPY index.html portal.css favicon.svg 404.html /app/
 COPY mines /app/mines
+COPY pentix /app/pentix
+COPY lines /app/lines
 
 ENV PYTHONUNBUFFERED=1
 EXPOSE 8080

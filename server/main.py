@@ -20,7 +20,11 @@ STATIC_FILES = {
     "404.html",
     "CNAME",
 }
-MINES_FILES = {"index.html", "styles.css", "game.js", "config.js", "favicon.svg"}
+GAME_FILES = {
+    "mines": {"index.html", "styles.css", "game.js", "config.js", "favicon.svg"},
+    "pentix": {"index.html", "styles.css", "game.js", "favicon.svg"},
+    "lines": {"index.html", "styles.css", "game.js", "favicon.svg"},
+}
 
 DIFFICULTIES = {
     "beginner": {"rows": 9, "cols": 9, "mines": 10},
@@ -231,21 +235,19 @@ def index():
     return FileResponse(ROOT / "index.html")
 
 
-@app.get("/mines")
-@app.get("/mines/")
-def mines_index():
-    return FileResponse(ROOT / "mines" / "index.html")
+@app.get("/{game}")
+@app.get("/{game}/")
+def game_index(game: str):
+    if game in GAME_FILES:
+        return FileResponse(ROOT / game / "index.html")
+    if game in STATIC_FILES:
+        return FileResponse(ROOT / game)
+    raise HTTPException(404)
 
 
-@app.get("/mines/{name}")
-def mines_static(name: str):
-    if name not in MINES_FILES:
+@app.get("/{game}/{name}")
+def game_static(game: str, name: str):
+    allowed = GAME_FILES.get(game)
+    if not allowed or name not in allowed:
         raise HTTPException(404)
-    return FileResponse(ROOT / "mines" / name)
-
-
-@app.get("/{name}")
-def static_file(name: str):
-    if name not in STATIC_FILES:
-        raise HTTPException(404)
-    return FileResponse(ROOT / name)
+    return FileResponse(ROOT / game / name)
